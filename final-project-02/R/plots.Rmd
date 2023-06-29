@@ -17,10 +17,6 @@ for(i in 1:22) {
 }
 mutations_all[23] <- nrow(df_all[df_all[,1] == "chrX",])
 barplot(mutations_all, names.arg = c(1:22, "X"), main = "Number of Mutations on Each Chromosome", xlab = "Chromosome Number", ylab = "Number of Mutations")
-```
-```{r}
-names <- character(22)
-names <- paste0("chr", 1:22)
 mutations <- numeric(23)
 for(i in 1:22) {
   mutations[i] <- nrow(df[df[,1] == names[i],])
@@ -34,7 +30,8 @@ typeFreq1 <- numeric(3)
 for(i in 1:2) {
   typeFreq1[i] <- nrow(df_all[df_all[,9] == types1[i],])
 }
-typeFreq[3] <- nrow(df_all) - typeFreq[1] - typeFreq[2]
+typeFreq1[3] <- nrow(df_all) - typeFreq1[1] - typeFreq1[2]
+par(mfrow = c(1, 2))
 pie(typeFreq1, labels = types1, main = "Types of Variations")
 types2 <- c("frameshift insertion", "nonframeshift insertion", "frameshift deletion", "nonframeshift deletion", "stopgain")
 typeFreq2 <- numeric(5)
