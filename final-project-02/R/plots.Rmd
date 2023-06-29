@@ -16,13 +16,13 @@ for(i in 1:22) {
   mutations_all[i] <- nrow(df_all[df_all[,1] == names[i],])
 }
 mutations_all[23] <- nrow(df_all[df_all[,1] == "chrX",])
-barplot(mutations_all, names.arg = c(1:22, "X"), main = "Number of Mutations on Each Chromosome", xlab = "Chromosome Number", ylab = "Number of Mutations")
+barplot(mutations_all, names.arg = c(1:22, "X"), main = "Mutations Per Chromosome", xlab = "Chromosome Number", ylab = "Number of Mutations")
 mutations <- numeric(23)
 for(i in 1:22) {
   mutations[i] <- nrow(df[df[,1] == names[i],])
 }
 mutations[23] <- nrow(df[df[,1] == "chrX",])
-barplot(mutations, names.arg = c(1:22, "X"), main = "Number of Exonic Mutations on Each Chromosome", xlab = "Chromosome Number", ylab = "Number of Exonic Mutations")
+barplot(mutations, names.arg = c(1:22, "X"), main = "Exonic Mutations Per Chromosome", xlab = "Chromosome Number", ylab = "Number of Exonic Mutations")
 ```
 ```{r}
 types1 <- c("synonymous SNV", "nonsynonymous SNV", "other")
@@ -30,63 +30,46 @@ typeFreq1 <- numeric(3)
 for(i in 1:2) {
   typeFreq1[i] <- nrow(df_all[df_all[,9] == types1[i],])
 }
-typeFreq1[3] <- nrow(df_all) - typeFreq1[1] - typeFreq1[2]
-par(mfrow = c(1, 2))
-pie(typeFreq1, labels = types1, main = "Types of Variations")
 types2 <- c("frameshift insertion", "nonframeshift insertion", "frameshift deletion", "nonframeshift deletion", "stopgain")
 typeFreq2 <- numeric(5)
 for(i in 1:5) {
   typeFreq2[i] <- nrow(df_all[df_all[,9] == types2[i],])
+  typeFreq1[3] <- typeFreq1[3] + typeFreq2[i]
 }
+pie(typeFreq1, labels = types1, main = "Types of Variations")
 pie(typeFreq2, labels = types2, main = "Types of Variations Excluding Synonymous and Nonsynonymous SNVs")
 ```
 ```{r}
-types1 <- c("synonymous SNV", "nonsynonymous SNV", "other")
-typeFreq1 <- numeric(3)
-for(i in 1:2) {
-  typeFreq1[i] <- nrow(df[df[,9] == types1[i],])
-}
-typeFreq[3] <- nrow(df) - typeFreq[1] - typeFreq[2]
-pie(typeFreq1, labels = types1, main = "Types of Variations of Exonic Mutations")
-types2 <- c("frameshift insertion", "nonframeshift insertion", "frameshift deletion", "nonframeshift deletion", "stopgain")
-typeFreq2 <- numeric(5)
-for(i in 1:5) {
-  typeFreq2[i] <- nrow(df[df[,9] == types2[i],])
-}
-pie(typeFreq2, labels = types2, main = "Types of Variations of Exonic Mutations Excluding Synonymous and Nonsynonymous SNVs")
-```
-```{r}
 sizes <- c(249250621, 243199373, 198022430, 191154276, 180915260, 171115067, 159138663, 146364022, 141213431, 135534747, 135006516, 133851895, 115169878, 107349540, 102531392, 90354753, 81195210, 78077248, 59128983, 63025520, 48129895, 51304566, 155270560)
-plot(mutations_all, sizes, main = "Size of Chromosome vs Number of Mutations", xlab = "Number of Mutations", ylab = "Size of Chromosome", xlim = c(0, 1200), ylim = c(0, 250000000))
-fit <- lm(sizes~mutations_all)
-abline(fit, col = "red")
-```
-```{r}
-sizes <- c(249250621, 243199373, 198022430, 191154276, 180915260, 171115067, 159138663, 146364022, 141213431, 135534747, 135006516, 133851895, 115169878, 107349540, 102531392, 90354753, 81195210, 78077248, 59128983, 63025520, 48129895, 51304566, 155270560)
+plot(mutations_all, sizes, main = "Size of Chromosome vs Number of Mutations", xlab = "Number of Mutations", ylab = "Size of Chromosome", xlim = c(0, 12000), ylim = c(0, 250000000))
+fit1 <- lm(sizes~mutations_all)
+abline(fit1, col = "red")
 plot(mutations, sizes, main = "Size of Chromosome vs Number of Exonic Mutations", xlab = "Number of Mutations", ylab = "Size of Chromosome", xlim = c(0, 1200), ylim = c(0, 250000000))
-fit <- lm(sizes~mutations)
-abline(fit, col = "red")
+fit2 <- lm(sizes~mutations)
+abline(fit2, col = "red")
 ```
 ```{r}
-mutations_all <- numeric(23)
-for(i in 1:22) {
-  mutations_all[i] <- nrow(df_all[df_all[,1] == names[i],])
-}
-mutations_all[23] <- nrow(df_all[df_all[,1] == "chrX",])
 genes <- c(2092, 1302, 1079, 753, 884, 1049, 998, 687, 780, 730, 1317, 1034, 321, 819, 612, 859, 1186, 266, 1473, 546, 234, 495, 851)
 plot(mutations_all, genes, main = "Number of Genes vs Number of Mutations on Each Chromosome", xlab = "Number of Mutations", ylab = "Number of Genes")
-mutations_all
-```
-```{r}
+fit1 <- lm(genes~mutations_all)
+abline(fit1, col = "red")
 plot(mutations, genes, main = "Number of Genes vs Number of Exonic Mutations on Each Chromosome", xlab = "Number of Mutations", ylab = "Number of Genes")
+fit2 <- lm(genes~mutations)
+abline(fit2, col = "red")
 ```
 ```{r}
+df_intronic <- df_all[df_all[,6] == "intronic",]
 intronic <- numeric(23)
-for(i in 1:23) {
-  intronic[i] <- nrow(df_all[df_all[,6] == "intronic",])
+for(i in 1:22) {
+  intronic[i] <- nrow(df_all[df_all[,1] == names[i],])
 }
-plot(mutations_all, genes, main = "Number of Intronic Mutations vs Number of Mutations on Each Chromosome", xlab = "Number of Intronic Mutations", ylab = "Number of Mutations")
+intronic[i] <- nrow(df_all[df_all[,1] == "chrX",])
+plot(intronic, mutations_all, main = "Number of Intronic Mutations vs Number of Mutations", xlab = "Number of Intronic Mutations", ylab = "Number of Mutations")
+fit <- lm(mutations_all~intronic)
+abline(fit, col = "red")
 ```
 ```{r}
-plot(mutations, intronic, main = "Number of Exonic Mutations vs Number of Intronic Mutations on Each Chromosome", xlab = "Number of Intronic Mutations", ylab = "Number of Exonic Mutations")
+plot(mutations, intronic, main = "Number of Exonic Mutations vs Number of Intronic Mutations", xlab = "Number of Intronic Mutations", ylab = "Number of Exonic Mutations")
+fit <- lm(intronic~mutations)
+abline(fit, col = "red")
 ```
