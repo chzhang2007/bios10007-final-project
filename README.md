@@ -1,4 +1,4 @@
-# A Comprehensive Analysis of Exome Sequencing Data from the 1000 Genomes Project for Disease-Associated Genetic Variants
+# Unraveling the Potential of the ADRB1 Gene Variant in Congestive Heart Failure Management through Exome Sequencing Analysis of the 1000 Genomes Project Data
 
 Dylan Patel, Peter Yao, Celine Zhang
 
